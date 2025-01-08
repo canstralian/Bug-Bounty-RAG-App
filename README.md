@@ -1,4 +1,4 @@
-# Machine Learning Dashboard
+Bug Bounty RAG Application 
 
 ![Streamlit](https://img.shields.io/badge/Streamlit-v1.25.0-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
