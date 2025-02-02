@@ -12,6 +12,10 @@ A simple and interactive **Machine Learning Dashboard** built using Streamlit. T
 - **Model Training and Evaluation**: Random Forest classifier with performance metrics.
 - **Feature Importance**: Visualization of feature importance using Matplotlib.
 - **Interactive Predictions**: Use sliders to input feature values and get real-time predictions.
+- **Tooltips and Descriptions**: Added tooltips and descriptions for each feature to guide users effectively.
+- **Loading Spinner and Success Messages**: Display a loading spinner and success messages after user interactions.
+- **Organized Layout**: Separate tabs for training and prediction sections.
+- **Monitoring Tools**: Integrated Prometheus, Grafana, New Relic, and Sentry for monitoring and visualization.
 
 ## Installation
 
@@ -35,6 +39,10 @@ The following Python libraries are required:
   - Pandas
   - Scikit-learn
   - Matplotlib
+  - Prometheus-client
+  - Grafana-client
+  - Newrelic
+  - Sentry-sdk
 
 Refer to `requirements.txt` for specific versions.
 
