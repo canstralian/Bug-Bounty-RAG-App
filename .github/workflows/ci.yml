@@ -12,3 +12,35 @@
       source venv/Scripts/activate
     fi
     pip install -r requirements.txt  # Replace with your actual requirements file
+
+- name: Install Prometheus
+  run: |
+    sudo apt-get update
+    sudo apt-get install -y prometheus
+
+- name: Install Grafana
+  run: |
+    sudo apt-get install -y software-properties-common
+    sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+    sudo apt-get update
+    sudo apt-get install -y grafana
+
+- name: Configure Prometheus
+  run: |
+    sudo systemctl start prometheus
+    sudo systemctl enable prometheus
+
+- name: Configure Grafana
+  run: |
+    sudo systemctl start grafana-server
+    sudo systemctl enable grafana-server
+
+- name: Install New Relic
+  run: |
+    curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash
+    sudo NEW_RELIC_API_KEY=${{ secrets.NEW_RELIC_API_KEY }} newrelic install
+
+- name: Install Sentry
+  run: |
+    pip install sentry-sdk
+    export SENTRY_DSN=${{ secrets.SENTRY_DSN }}

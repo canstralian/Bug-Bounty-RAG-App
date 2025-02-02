@@ -2,3 +2,7 @@ streamlit>=1.25.0
 pandas>=1.5.0
 scikit-learn>=1.3.0
 matplotlib>=3.7.0
+prometheus-client
+grafana-client
+newrelic
+sentry-sdk
