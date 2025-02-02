@@ -1,46 +1,44 @@
-- name: Set up Python
-  uses: actions/setup-python@v3
-  with:
-    python-version: '3.8'  # Replace with your desired version
+name: CI/CD Pipeline
 
-- name: Install dependencies
-  run: |
-    python -m venv venv
-    if [ -f venv/bin/activate ]; then
-      source venv/bin/activate
-    elif [ -f venv/Scripts/activate ]; then
-      source venv/Scripts/activate
-    fi
-    pip install -r requirements.txt  # Replace with your actual requirements file
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-- name: Install Prometheus
-  run: |
-    sudo apt-get update
-    sudo apt-get install -y prometheus
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-- name: Install Grafana
-  run: |
-    sudo apt-get install -y software-properties-common
-    sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
-    sudo apt-get update
-    sudo apt-get install -y grafana
+    steps:
+      - uses: actions/checkout@v2
 
-- name: Configure Prometheus
-  run: |
-    sudo systemctl start prometheus
-    sudo systemctl enable prometheus
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
 
-- name: Configure Grafana
-  run: |
-    sudo systemctl start grafana-server
-    sudo systemctl enable grafana-server
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-- name: Install New Relic
-  run: |
-    curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash
-    sudo NEW_RELIC_API_KEY=${{ secrets.NEW_RELIC_API_KEY }} newrelic install
+      - name: Build Docker image
+        run: |
+          docker build -t streamlit-app .
 
-- name: Install Sentry
-  run: |
-    pip install sentry-sdk
-    export SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+      - name: Run tests
+        run: |
+          # Add your test commands here
+          echo "Running tests..."
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker tag streamlit-app ${{ secrets.DOCKER_USERNAME }}/streamlit-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/streamlit-app:latest
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
