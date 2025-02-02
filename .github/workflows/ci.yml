@@ -1,10 +1,14 @@
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.8'  # Replace with your desired version
+- name: Set up Python
+  uses: actions/setup-python@v3
+  with:
+    python-version: '3.8'  # Replace with your desired version
 
-      - name: Install dependencies
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt  # Replace with your actual requirements file
+- name: Install dependencies
+  run: |
+    python -m venv venv
+    if [ -f venv/bin/activate ]; then
+      source venv/bin/activate
+    elif [ -f venv/Scripts/activate ]; then
+      source venv/Scripts/activate
+    fi
+    pip install -r requirements.txt  # Replace with your actual requirements file
